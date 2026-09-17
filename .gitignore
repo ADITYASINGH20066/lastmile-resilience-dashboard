@@ -1,0 +1,20 @@
+# Web dependencies and build output
+node_modules/
+dist/
+
+# Android and Gradle generated files
+.gradle/
+**/build/
+local.properties
+
+# IDE metadata and machine-specific project files
+.idea/
+*.iml
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log

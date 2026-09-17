@@ -1,0 +1,10 @@
+{
+  "name": "LastMile Resilience Command",
+  "short_name": "LastMile",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#071217",
+  "theme_color": "#08151b",
+  "description": "Resilient disaster alert delivery dashboard",
+  "icons": [{ "src": "/lastmile-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
