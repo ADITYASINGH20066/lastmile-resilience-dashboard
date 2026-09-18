@@ -1,0 +1,4 @@
+station_code,station_name,river_name,basin_name,latitude,longitude,warning_level,danger_level,water_level,discharge_rate,reading_timestamp
+CWC_GHY_01,Guwahati Gauge,Brahmaputra,Brahmaputra Basin,26.1833,91.7333,48.50,49.00,48.75,12500.5,2026-09-17 10:00:00
+CWC_TZP_02,Tezpur Station,Brahmaputra,Brahmaputra Basin,26.6333,92.8000,64.00,65.20,63.10,9800.0,2026-09-17 10:00:00
+CWC_DIB_03,Dibrugarh Station,Brahmaputra,Brahmaputra Basin,27.4833,94.9000,104.50,105.70,106.10,18200.2,2026-09-17 10:00:00

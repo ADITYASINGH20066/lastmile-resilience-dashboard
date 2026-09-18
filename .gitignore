@@ -1,20 +1,105 @@
-# Web dependencies and build output
-node_modules/
-dist/
+# =========================================================
+# ENVIRONMENT / SECRETS
+# =========================================================
 
-# Android and Gradle generated files
-.gradle/
-**/build/
-local.properties
+# Ignore environment files in root and all subdirectories
+**/.env
+**/.env.*
 
-# IDE metadata and machine-specific project files
-.idea/
-*.iml
-
-# Local environment files
-.env
-.env.*
+# Keep example environment files tracked
 !.env.example
+!**/.env.example
+
+
+# =========================================================
+# FRONTEND / NODE
+# =========================================================
+
+node_modules/
+**/node_modules/
+
+dist/
+**/dist/
+
+# Vite / frontend caches
+.vite/
+**/.vite/
+
+# Coverage output
+coverage/
+**/coverage/
+
+
+# =========================================================
+# PYTHON BACKEND
+# =========================================================
+
+# Python virtual environments
+.venv/
+**/.venv/
+venv/
+**/venv/
+
+# Python cache / compiled files
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Python tooling caches
+.pytest_cache/
+**/.pytest_cache/
 
 # Logs
 *.log
+**/*.log
+
+
+# =========================================================
+# ANDROID / GRADLE
+# =========================================================
+
+.gradle/
+**/.gradle/
+
+**/build/
+local.properties
+**/local.properties
+
+# Android Studio generated files
+.idea/
+**/.idea/
+*.iml
+**/*.iml
+
+# Kotlin generated files
+.kotlin/
+**/.kotlin/
+
+
+# =========================================================
+# IDE / OS FILES
+# =========================================================
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# VS Code
+.vscode/
+**/.vscode/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+
+# =========================================================
+# PROJECT-SPECIFIC LOCAL FILES
+# =========================================================
+
+# Backup files created during development
+*.backup
+*.bak
