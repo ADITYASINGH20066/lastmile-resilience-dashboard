@@ -19,140 +19,62 @@ async def active_alerts():
         get_admin_client()
         .table("alerts")
         .select("*")
-        .in_(
-            "status",
-            [
-                "pending_approval",
-                "approved",
-                "dispatching",
-                "active",
-            ],
-        )
+        .in_("status", ["pending_approval", "approved", "dispatching", "active"])
         .order("created_at", desc=True)
         .limit(100)
         .execute()
         .data
         or []
     )
-
     return {"items": rows}
 
 
 @router.get("/{alert_id}")
 async def get_alert(alert_id: UUID):
     admin = get_admin_client()
-
-    alert = (
-        admin.table("alerts")
-        .select("*")
-        .eq("id", str(alert_id))
-        .maybe_single()
-        .execute()
-        .data
-    )
-
+    alert = admin.table("alerts").select("*").eq("id", str(alert_id)).maybe_single().execute().data
     if not alert:
-        raise HTTPException(
-            status_code=404,
-            detail="Alert not found",
-        )
+        raise HTTPException(404, "Alert not found")
+    targets = admin.table("alert_targets").select("*").eq("alert_id", str(alert_id)).execute().data or []
+    deliveries = admin.table("alert_deliveries").select("*").eq("alert_id", str(alert_id)).order("created_at", desc=True).execute().data or []
+    return {"alert": alert, "targets": targets, "deliveries": deliveries}
 
-    targets = (
-        admin.table("alert_targets")
-        .select("*")
-        .eq("alert_id", str(alert_id))
+
+@router.get("/{alert_id}/impact")
+async def get_impact(alert_id: UUID):
+    admin = get_admin_client()
+    alert = admin.table("alerts").select("event_id").eq("id", str(alert_id)).maybe_single().execute().data
+    if not alert or not alert.get("event_id"):
+        raise HTTPException(404, "Alert or event not found")
+    items = (
+        admin.table("impact_assessments")
+        .select("event_id,village_id,risk_score,risk_level,time_to_impact_minutes,hazard_path_distance_km,downstream_order,population_at_risk,calculation_method,model_version")
+        .eq("event_id", str(alert["event_id"]))
+        .order("downstream_order")
         .execute()
         .data
         or []
     )
-
-    deliveries = (
-        admin.table("alert_deliveries")
-        .select("*")
-        .eq("alert_id", str(alert_id))
-        .order("created_at", desc=True)
-        .execute()
-        .data
-        or []
-    )
-
-    return {
-        "alert": alert,
-        "targets": targets,
-        "deliveries": deliveries,
-    }
+    return {"event_id": alert["event_id"], "items": items}
 
 
 @router.post("/{alert_id}/impact")
-async def build_impact(
-    alert_id: UUID,
-    user: dict = Depends(
-        require_roles(
-            "control_room",
-            "disaster_authority",
-            "admin",
-        )
-    ),
-):
+async def build_impact(alert_id: UUID, user: dict = Depends(require_roles("control_room", "disaster_authority", "admin"))):
     del user
-
-    alert = (
-        get_admin_client()
-        .table("alerts")
-        .select("event_id")
-        .eq("id", str(alert_id))
-        .maybe_single()
-        .execute()
-        .data
-    )
-
+    alert = get_admin_client().table("alerts").select("event_id").eq("id", str(alert_id)).maybe_single().execute().data
     if not alert:
-        raise HTTPException(
-            status_code=404,
-            detail="Alert not found",
-        )
-
-    items = await build_impact_assessment(
-        UUID(alert["event_id"])
-    )
-
+        raise HTTPException(404, "Alert not found")
+    items = await build_impact_assessment(UUID(alert["event_id"]))
     return {"items": items}
 
 
 @router.post("/{alert_id}/approve")
-async def approve(
-    alert_id: UUID,
-    payload: ApprovalCreate,
-    user: dict = Depends(get_current_user),
-):
-    if user.get("role") not in {
-        "control_room",
-        "disaster_authority",
-        "admin",
-    }:
-        raise HTTPException(
-            status_code=403,
-            detail=(
-                "Only authorized control-room/disaster roles "
-                "can approve public alert dispatch"
-            ),
-        )
-
+async def approve(alert_id: UUID, payload: ApprovalCreate, user: dict = Depends(get_current_user)):
+    if user.get("role") not in {"control_room", "disaster_authority", "admin"}:
+        raise HTTPException(403, "Only authorized control-room/disaster roles can approve public alert dispatch")
     try:
-        return await approve_alert(
-            alert_id,
-            user,
-            payload.comments,
-        )
-
+        return await approve_alert(alert_id, user, payload.comments)
     except PermissionError as exc:
-        raise HTTPException(
-            status_code=403,
-            detail=str(exc),
-        ) from exc
-
+        raise HTTPException(403, str(exc)) from exc
     except ValueError as exc:
-        raise HTTPException(
-            status_code=400,
-            detail=str(exc),
-        ) from exc
+        raise HTTPException(400, str(exc)) from exc

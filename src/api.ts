@@ -62,10 +62,28 @@ export type Alert = {
   id: string
   alert_code?: string | null
   title: string
+  description?: string | null
+  instruction?: string | null
   priority?: string | null
+  urgency?: string | null
+  severity?: string | null
+  certainty?: string | null
   status: string
   created_at: string
   event_id?: string | null
+}
+
+export type ImpactAssessment = {
+  event_id?: string | null
+  village_id: string
+  risk_score: number
+  risk_level: string
+  time_to_impact_minutes: number
+  hazard_path_distance_km?: number | null
+  downstream_order?: number | null
+  population_at_risk?: number | null
+  calculation_method?: string | null
+  model_version?: string | null
 }
 
 export type DashboardSummary = {
@@ -123,6 +141,10 @@ export function getActiveAlerts() {
 
 export function getAlert(alertId: string) {
   return apiRequest<{ alert: Alert; targets: unknown[]; deliveries: unknown[] }>(`/alerts/${alertId}`)
+}
+
+export function getAlertImpact(alertId: string) {
+  return apiRequest<{ event_id: string | null; items: ImpactAssessment[] }>(`/alerts/${alertId}/impact`)
 }
 
 export function startReplay(riverCode: string, payload: { station_code?: string; limit?: number; delay_seconds?: number }) {
