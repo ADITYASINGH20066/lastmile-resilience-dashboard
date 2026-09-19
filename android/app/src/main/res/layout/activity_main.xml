@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LASTMILE / ALERT RELAY"
+            android:text="SENTINEL-X / LASTMILE"
             android:textColor="#72D9C6"
             android:textSize="12sp"
             android:fontFamily="monospace" />
@@ -22,10 +22,51 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:text="The warning travels."
+            android:text="Operational dashboard"
             android:textColor="#E8F0EC"
             android:textSize="30sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/userText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#9BAEAA"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="DEMO ROLE"
+            android:textColor="#79918E"
+            android:textSize="11sp"
+            android:fontFamily="monospace" />
+
+        <Spinner
+            android:id="@+id/roleSelector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:contentDescription="Select demo role" />
+
+        <TextView
+            android:id="@+id/roleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="#72D9C6"
+            android:textSize="12sp"
+            android:fontFamily="monospace" />
+
+        <TextView
+            android:id="@+id/workspaceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="#E8F0EC"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/statusText"
@@ -35,6 +76,51 @@
             android:text="Relay is stopped"
             android:textColor="#9BAEAA"
             android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/dashboardUrlInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:hint="Supabase project URL"
+            android:inputType="textUri"
+            android:singleLine="true"
+            android:text="Supabase data is configured in local.properties"
+            android:textColor="#E8F0EC"
+            android:textColorHint="#79918E" />
+
+        <TextView
+            android:id="@+id/dashboardStatusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Supabase: not connected"
+            android:textColor="#F3C969"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/dashboardButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Refresh Supabase data"
+            android:textAllCaps="false" />
+
+        <LinearLayout
+            android:id="@+id/roleContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:orientation="vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="NETWORK TWIN"
+            android:textColor="#79918E"
+            android:textSize="11sp"
+            android:fontFamily="monospace" />
 
         <Button
             android:id="@+id/relayButton"
@@ -49,7 +135,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Send demo P0 flood alert"
+            android:text="Send chained P0 alert"
             android:textAllCaps="false" />
 
         <TextView

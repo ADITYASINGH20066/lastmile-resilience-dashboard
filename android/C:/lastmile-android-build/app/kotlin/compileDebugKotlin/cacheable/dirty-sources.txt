@@ -1,1 +1,0 @@
-/Users/bhaskarjoshi/Downloads/SIH/lastmile-resilience-dashboard/android/app/src/main/java/com/lastmile/alert/MainActivity.kt
