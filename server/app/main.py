@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import alerts, auth, community, dashboard, health, hydro, replay, rivers, sensors
+from app.api import admin, alerts, auth, community, community_member, dashboard, health, hydro, replay, rivers, sensors, village_authority
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -21,6 +21,7 @@ app.add_middleware(
 )
 
 app.include_router(health.router, prefix="/api")
+app.include_router(admin.router, prefix="/api")
 app.include_router(auth.router, prefix="/api")
 app.include_router(rivers.router, prefix="/api")
 app.include_router(hydro.router, prefix="/api")
@@ -29,6 +30,8 @@ app.include_router(community.router, prefix="/api")
 app.include_router(alerts.router, prefix="/api")
 app.include_router(replay.router, prefix="/api")
 app.include_router(dashboard.router, prefix="/api")
+app.include_router(village_authority.router, prefix="/api")
+app.include_router(community_member.router, prefix="/api")
 
 
 @app.get("/")

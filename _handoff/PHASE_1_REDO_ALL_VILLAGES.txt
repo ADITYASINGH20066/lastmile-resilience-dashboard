@@ -1,0 +1,39 @@
+SENTINEL-X — PHASE 1 REDO: ALL VILLAGES
+
+Purpose
+-------
+Fix the Control Room Command View so it does not treat one village as the only village.
+
+Data model
+----------
+- Hazard telemetry is station-level. The selected basin has a monitoring station (Teesta/Melli or Desang/Nanglamoraghat).
+- Villages are separate records under the basin and are displayed independently.
+- When an active alert has impact assessments, each village gets its backend risk/ETA/downstream values.
+- When there is no persisted impact assessment, village base data still appears; the UI does not fabricate a village water-level reading.
+
+UI changes
+----------
+1. Village selector beside the hazard/alert area uses ALL village records returned by /api/rivers/{river}/villages.
+2. Selected village detail shows population, vulnerability, risk, score and ETA when an impact exists.
+3. Impact table renders every configured village, not only impact rows.
+4. Delivery coverage/simulation values are no longer used in this Command View table.
+5. A note explicitly distinguishes station telemetry from village impact data.
+6. Existing map/table village selection continues to work.
+
+Backend changes
+---------------
+None required for this redo. Existing endpoints already return:
+- all villages for a basin
+- latest station reading
+- active alert
+- impact assessments for the alert's event
+
+Expected seeded counts
+----------------------
+Teesta: 3 villages
+Desang: 3 villages
+
+Files replaced
+--------------
+src/App.tsx
+src/styles.css

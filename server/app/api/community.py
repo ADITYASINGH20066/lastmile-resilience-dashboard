@@ -70,24 +70,37 @@ async def create_report(
             detail="Selected station not found",
         )
 
-    village_id = (
-        str(payload.village_id)
-        if payload.village_id
-        else user.get("village_id")
-    )
-
-    if (
-        user["role"] == "community_member"
-        and user.get("village_id")
-        and village_id != user["village_id"]
-    ):
-        raise HTTPException(
-            status_code=403,
-            detail=(
-                "Community members may submit reports only "
-                "for their registered village"
-            ),
+    if user["role"] == "village_authority":
+        if not user.get("village_id"):
+            raise HTTPException(
+                status_code=403,
+                detail="Village Authority account is not assigned to a village",
+            )
+        if payload.village_id and str(payload.village_id) != str(user["village_id"]):
+            raise HTTPException(
+                status_code=403,
+                detail="Village Authority may submit reports only for its assigned village",
+            )
+        village_id = str(user["village_id"])
+    else:
+        village_id = (
+            str(payload.village_id)
+            if payload.village_id
+            else user.get("village_id")
         )
+
+        if (
+            user["role"] == "community_member"
+            and user.get("village_id")
+            and village_id != user["village_id"]
+        ):
+            raise HTTPException(
+                status_code=403,
+                detail=(
+                    "Community members may submit reports only "
+                    "for their registered village"
+                ),
+            )
 
     if not village_id:
         raise HTTPException(

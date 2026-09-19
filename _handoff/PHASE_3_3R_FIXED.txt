@@ -1,0 +1,19 @@
+SENTINEL-X Phase 3.3R — Role-First Dashboard (FIXED PACKAGE)
+
+This package is intentionally FLAT so it can be unzipped directly into the existing repo.
+
+Replaces only:
+- src/App.tsx
+- src/roleWorkspaces.tsx
+- src/styles.css
+
+UI behavior:
+- Global header no longer exposes Scenarios or Network Twin.
+- Command View is only inside Control Room.
+- Non-Control-Room roles get only their own personalised dashboard.
+- Control Room has internal task navigation:
+  Command View / Inbound Data / Village Delivery / Connectivity / Audit
+- Light operations theme and cleaner typography are included.
+- Existing backend/API files are untouched.
+
+Phase 3.4 remains Supabase Auth + real role routing.

@@ -1,0 +1,42 @@
+SENTINEL-X — Phase 3.2 UI update
+
+Replace these paths in the existing repo:
+
+src/App.tsx
+src/api.ts
+src/styles.css
+server/app/api/alerts.py
+index.html
+public/manifest.webmanifest
+public/sentinel-x-icon.svg
+
+The first four are the functional 3.2 changes.
+The last three are the Sentinel-X browser/PWA rebrand.
+
+After copying the files:
+
+1. Start backend:
+   cd server
+   source .venv/bin/activate
+   uvicorn app.main:app --reload
+
+2. Start frontend in another terminal:
+   npm run dev
+
+3. Test:
+   - Select DESANG / CWC Nanglamoraghat.
+   - Confirm the real water-level/station information loads.
+   - Confirm the active alert card appears when an active backend alert exists.
+   - Confirm the Affected villages & time to impact table loads from /api/alerts/{alert_id}/impact.
+   - Click a village row and confirm the map/selected-village state updates.
+   - Click Review alert & impact and confirm the review modal opens.
+   - Confirm approval is shown as a human gate, but no auth/approval action is executed yet.
+   - Test the mesh simulation buttons.
+   - Test the browser notification button.
+
+Validation performed on the generated files:
+- TypeScript project check (tsc -b): PASS
+- Python syntax check for server/app/api/alerts.py: PASS
+
+Note:
+The exact Sentinel-X full-form text from the user's PPT was not available in the accessible source files for this turn. The UI therefore uses the exact product name SENTINEL-X and the supplied tagline "When the network dies, the warning doesn't." The brand strings are centralized at the top of src/App.tsx so the exact expansion can be inserted in one place later.

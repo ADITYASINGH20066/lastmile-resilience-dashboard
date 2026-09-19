@@ -9,7 +9,7 @@ router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 async def summary():
     admin = get_admin_client()
 
-    stations = admin.table("hydro_stations").select("id,station_code,station_name,river_name,warning_level_m,danger_level_m,highest_flood_level_m").in_("station_code", ["CWC_MELLI", "CWC_NANGLAMORAGHAT"]).execute().data or []
+    stations = admin.table("hydro_stations").select("id,station_code,station_name,river_name,district,state,latitude,longitude,warning_level_m,danger_level_m,highest_flood_level_m").in_("station_code", ["CWC_MELLI", "CWC_NANGLAMORAGHAT"]).execute().data or []
 
     latest = []
     for station in stations:
@@ -27,7 +27,7 @@ async def summary():
 
     recent_evaluations = (
         admin.table("rule_evaluations")
-        .select("id,hydro_reading_id,event_id,total_score,risk_level,alert_recommended,alert_priority,reasons,evaluated_at")
+        .select("id,hydro_reading_id,sensor_reading_id,community_report_id,event_id,engine_version,level_score,rate_score,sensor_score,community_score,persistence_score,total_score,risk_level,alert_recommended,alert_priority,reasons,evaluated_at")
         .order("evaluated_at", desc=True)
         .limit(20)
         .execute()
@@ -37,7 +37,7 @@ async def summary():
 
     active_alerts = (
         admin.table("alerts")
-        .select("id,alert_code,title,priority,status,created_at,event_id")
+        .select("id,alert_code,title,description,instruction,priority,urgency,severity,certainty,status,created_at,event_id")
         .in_("status", ["pending_approval", "approved", "dispatching", "active"])
         .order("created_at", desc=True)
         .limit(20)
